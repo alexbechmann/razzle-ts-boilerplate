@@ -7,10 +7,20 @@ COPY yarn.lock .
 
 RUN npm install -g yarn
 RUN yarn install --verbose
+RUN apt-get update
+RUN apt-get install dos2unix
 
-COPY . .
+COPY ./dev.docker-entrypoint.sh .
+RUN dos2unix ./dev.docker-entrypoint.sh
+
+COPY ./razzle.config.js .
+COPY ./tsconfig.json .
+COPY tslint.json .
+COPY .prettierrc .
 
 EXPOSE 3000
 EXPOSE 3001
 
-CMD [ "npm", "run", "start" ]
+RUN chmod +x ./dev.docker-entrypoint.sh
+
+ENTRYPOINT ["./dev.docker-entrypoint.sh"]
