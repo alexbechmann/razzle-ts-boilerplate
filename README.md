@@ -1,8 +1,16 @@
 # razzle-ts-boilerplate
 
-# Develop
+## Quickstart
+```
+git clone https://github.com/alexbechmann/razzle-ts-boilerplate.git my-app
+cd my-app
+yarn 
+yarn start
+```
 
-## yarn
+## Develop
+
+### yarn
 ```
 yarn
 yarn start
@@ -10,15 +18,15 @@ yarn start
 
 or
 
-## docker
+### docker
 ```
 yarn
 docker-compose up --build
 ```
 
-# Production
+## Production
 
-## yarn
+### yarn
 ```
 yarn run build
 yarn run start:prod
@@ -26,7 +34,7 @@ yarn run start:prod
 
 or 
 
-## docker
+### docker
 ```
 docker-compose -f docker-compose.yml up --remove-orphans --build
 ```
