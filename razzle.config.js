@@ -1,42 +1,49 @@
 'use strict';
 
+const path = require('path');
 const babelEnvDeps = require('webpack-babel-env-deps');
 
 module.exports = {
   plugins: ['typescript'],
   modify(config, { target, dev }, webpack) {
     const appConfig = config;
-    appConfig.module.rules.push({
-      test: /\.(js|jsx|ts|tsx)?$/,
-      loader: 'prettier-loader',
-      exclude: /node_modules/
-    })
     if (target === 'web') {
-      appConfig.module.rules.push({
-        test: /\.(js|jsx)$/,
-        loader: "babel-loader",
-        exclude: [
-          babelEnvDeps.exclude()
-        ],
-        options: {
-          babelrc: false,
-          presets: [
-            [
-              'env',
-              {
-                "modules": "commonjs",
-                "targets": {
-                  "browsers": ["last 2 versions", "ie >= 11"]
-                }
-              }
-            ]
+      appConfig.module.rules = [
+        ...appConfig.module.rules,
+        {
+          test: /\.(js|jsx)$/,
+          loader: 'ts-loader',
+          exclude: [
+            babelEnvDeps.exclude()
           ],
-          plugins: [
-            "transform-es2015-arrow-functions",
-          ]
+          options: {
+            transpileOnly: true
+          }
+        },
+        {
+          test: /\.(js|jsx|ts|tsx)$/,
+          loader: 'ts-loader',
+          include: [
+            path.resolve(__dirname, 'api'),
+            path.resolve(__dirname, 'workplace-core'),
+            path.resolve(__dirname, 'umbraco-headless'),
+            path.resolve(__dirname, 'news'),
+            path.resolve(__dirname, 'workplace-styles'),
+          ],
+          options: {
+            transpileOnly: true
+          }
         }
-      })
+      ]
     }
+    appConfig.module.rules = [
+      ...appConfig.module.rules,
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        loader: 'prettier-loader',
+        exclude: /node_modules/,
+      }
+    ]
     return appConfig;
   },
 };
