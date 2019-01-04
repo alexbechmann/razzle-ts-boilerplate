@@ -39,7 +39,7 @@ module.exports = {
     appConfig.module.rules = [
       ...appConfig.module.rules,
       {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.(js|jsx|ts|tsx|css|scss)$/,
         loader: 'prettier-loader',
         exclude: /node_modules/,
       }
